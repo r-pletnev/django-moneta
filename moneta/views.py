@@ -1,11 +1,9 @@
+import logging
 from typing import Optional
 
 from django.views.generic import FormView, View
-from django.http import HttpResponse, HttpResponseRedirect
-import logging
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 
-from rest_framework.response import Response
-from rest_framework.views import APIView
 
 from moneta.models import PaymentSystem
 from moneta.configuration import moneta_config, UrlGenerator
@@ -20,6 +18,8 @@ def hook_view(request):
 
 class CheckNotificationView(View):
     """Handler checking notification from payment server"""
+
+    pass
 
 
 class PaidNotificationView(View):
@@ -43,7 +43,7 @@ class PaymentURLMixin:
         )
 
 
-class PaymentInitApiView(APIView, PaymentURLMixin):
+class PaymentInitApiView(View, PaymentURLMixin):
     """
     EXAMPLE View for RESTfull apis.
     It generates url for PayAnyWay payment system.
@@ -52,12 +52,12 @@ class PaymentInitApiView(APIView, PaymentURLMixin):
 
     def get(self, request, order_id, amount):
         url = self.get_payment_url(order_id=order_id, amount=amount)
-        return Response({"payment_url": url})
+        return JsonResponse({"payment_url": url})
 
 
 class PaymentInitFormView(FormView, PaymentURLMixin):
     """
-    EXAMPLE: Standart Form View.
+    EXAMPLE: Standard Form View.
     It redirects user to PayAnyWay url payment system
     Documentation: https://demo.moneta.ru/doc/MONETA.Assistant.ru.pdf
     """

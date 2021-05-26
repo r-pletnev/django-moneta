@@ -1,0 +1,10 @@
+include README.rst
+include LICENSE
+recursive-include moneta/configuration/ *.py
+recursive-include moneta/fixtures/ *.json
+recursive-include moneta/management/ *.py
+recursive-include moneta/migrations/ *.py
+recursive-include moneta/templates/ *
+
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
