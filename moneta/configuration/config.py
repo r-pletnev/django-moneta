@@ -18,7 +18,7 @@ class BasicConfig(BaseModel):
     history_items_per_page: Optional[int] = 20
     currency: Optional[str] = "RUB"
     payment_description: Optional[str] = None
-    payment_system_name: Optional[str] = None
+    payment_system_name: Optional[str] = "plastic"
     signature_required: Optional[bool] = False
 
     def get_account_code(self) -> str:

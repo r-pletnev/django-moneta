@@ -7,6 +7,7 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 
 from moneta.models import PaymentSystem
 from moneta.configuration import moneta_config, UrlGenerator
+from moneta.schemas import CheckParameters
 
 log = logging.getLogger("moneta-log")
 
@@ -19,7 +20,8 @@ def hook_view(request):
 class CheckNotificationView(View):
     """Handler checking notification from payment server"""
 
-    pass
+    def create_invoice(self, params: CheckParameters):
+        pass
 
 
 class PaidNotificationView(View):
