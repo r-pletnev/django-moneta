@@ -8,6 +8,9 @@ from moneta.configuration import (
 )
 
 
+pytestmark = pytest.mark.django_db
+
+
 def test_empty_basic_config():
     with pytest.raises(ValidationError):
         empty_config = {}

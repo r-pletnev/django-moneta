@@ -37,8 +37,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "rest_framework",
-    "django_moneta",
+    'moneta',
 ]
 
 MIDDLEWARE = [
@@ -159,7 +158,7 @@ LOGGING = {
 
 MONETA = {
     "basic_config": {
-        "account_id": "test",
+        "account_id": 123,
         "account_username": "test",
         "account_password": "123",
         "payment_system_name": "plastic",
