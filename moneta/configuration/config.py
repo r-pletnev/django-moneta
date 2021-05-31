@@ -73,6 +73,9 @@ class MainConfig(BaseModel):
         ).last()
         return pay_system
 
+    def __getattr__(self, item):
+        return getattr(self.basic_config, item)
+
 
 DEFAULTS = {
     "basic_config": {},

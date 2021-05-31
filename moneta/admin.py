@@ -11,4 +11,12 @@ class PaymentSystemAdmin(admin.ModelAdmin):
 
 @admin.register(Invoice)
 class InvoiceAdmin(admin.ModelAdmin):
-    list_display = ('id', 'created', 'status', 'amount', 'currency', 'test_mode')
+    list_display = (
+        "id",
+        "transaction_id",
+        "created",
+        "status",
+        "amount",
+        "currency",
+        "test_mode",
+    )

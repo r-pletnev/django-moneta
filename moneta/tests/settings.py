@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'moneta',
+    "moneta",
 ]
 
 MIDDLEWARE = [
@@ -162,5 +162,6 @@ MONETA = {
         "account_username": "test",
         "account_password": "123",
         "payment_system_name": "plastic",
+        "account_code": "secret",
     }
 }

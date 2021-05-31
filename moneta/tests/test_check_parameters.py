@@ -2,7 +2,7 @@ from decimal import Decimal
 
 import pytest
 
-from moneta.schemas import CheckParameters
+from moneta.schemas import MonetaQueryParameters
 
 
 def test_make_check_params():
@@ -19,7 +19,7 @@ def test_make_check_params():
         "paymentSystem.unitId": "43674",
         "MNT_CORRACCOUNT": "317",
     }
-    params = CheckParameters(**get_kwargs)
+    params = MonetaQueryParameters(**get_kwargs)
     assert params.merchant_id == 1
     assert params.unit_id == "43674"
     assert params.amount == Decimal("1.24")

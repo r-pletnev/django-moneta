@@ -5,6 +5,7 @@ from moneta.configuration import (
     UrlsConfig,
     MainConfig,
     MainSettings,
+    moneta_config,
 )
 
 
@@ -120,3 +121,7 @@ def test_incorrect_payment_system_name():
     }
     with pytest.raises(ValueError):
         MainSettings(user_settings=config)
+
+
+def test_moneta_config():
+    assert moneta_config.get_account_code() == "secret"

@@ -8,7 +8,7 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from moneta import signals
 from moneta.models import PaymentSystem, Invoice
 from moneta.configuration import moneta_config, UrlGenerator
-from moneta.schemas import CheckParameters
+from moneta.schemas import MonetaQueryParameters
 
 log = logging.getLogger("moneta-log")
 
@@ -22,58 +22,45 @@ class CheckNotificationView(View):
     """Handler checking notification from payment server"""
 
     @staticmethod
-    def create_invoice(params: CheckParameters) -> Invoice:
+    def create_invoice(params: MonetaQueryParameters) -> Invoice:
         values = params.dict()
         values["test_mode"] = params.get_test_mode()
-        values["status"] = Invoice.CHECK
         values["payment_system"] = params.get_payment_system()
         values["payment_system_unit_id"] = params.unit_id
-        del values["command"]
         del values["moneta_user"]
         del values["unit_id"]
-        return Invoice.objects.get_or_create(
-            transaction_id=params.transaction_id, defaults=values
+        return Invoice.objects.create_check_invoice(
+            transaction_id=params.transaction_id, values=values
         )
-
-    @staticmethod
-    def xml_response(params: CheckParameters) -> str:
-        """
-        MONETA RESULT CODES:
-            - 100: Answer contains amount field. This code should use when check query doen not contain MNT_AMONT
-            - 200: Order paid. Notification about paid delivered.
-            - 302: Order processing.
-            - 402: Order created and ready to pay. Pay notification did not deliver
-            - 500: Order outdated. Pay process will be ended.
-
-            In normal cases merchant should return 402 or 100 codes
-        """
-        code = 402
-        return f"""<?xml version="1.0" encoding="UTF-8"?>
-        <MNT_RESPONSE>
-            <MNT_ID>{params.merchant_id}</MNT_ID>
-            <MNT_TRANSACTION_ID>{params.transaction_id}</MNT_TRANSACTION_ID>
-            <MNT_RESULT_CODE>{code}</MNT_RESULT_CODE>
-        </MNT_RESPONSE>
-                """
 
     def post(self, request, *args, **kwargs):
         body = json.loads(request.body.decode("utf-8"))
-        params = CheckParameters(**body)
+        params = MonetaQueryParameters(**body)
         invoice = self.create_invoice(params)
         signals.invoice_checking.send(sender=self, invoice=invoice)
-        return HttpResponse(self.xml_response(params), content_type="text/xml")
+        return HttpResponse(params.xml_body(), content_type="text/xml")
 
     def get(self, request):
-        params = CheckParameters(**request.GET.dict())
+        params = MonetaQueryParameters(**request.GET.dict())
         invoice = self.create_invoice(params)
         signals.invoice_checking.send(sender=self, invoice=invoice)
-        return HttpResponse("YES")
+        return HttpResponse(params.xml_body(), content_type="text/xml")
 
 
 class PaidNotificationView(View):
     """Handler notification that user paid payment"""
 
-    pass
+    @staticmethod
+    def finalize_invoice(params: MonetaQueryParameters) -> Optional[Invoice]:
+        return Invoice.objects.finalize(transaction_id=params.transaction_id)
+
+    def get(self, request):
+        params = MonetaQueryParameters(**request.GET.dict())
+        invoice = self.finalize_invoice(params)
+        if invoice is None:
+            return HttpResponse("FAIL")
+        signals.invoice_paid.send(sender=self, invoice=invoice)
+        return HttpResponse("SUCCESS")
 
 
 class PaymentURLMixin:
