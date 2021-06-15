@@ -20,7 +20,7 @@ class MonetaQueryParameters(BaseModel):
     operation_id: Optional[str] = Field(alais="MNT_OPERATION_ID")
     amount: Optional[Decimal] = Field(alias="MNT_AMOUNT")
     currency: str = Field(alias="MNT_CURRENCY_CODE")
-    subscriber_id: int = Field(alias="MNT_SUBSCRIBER_ID")
+    subscriber_id: str = Field(alias="MNT_SUBSCRIBER_ID")
     test_mode: str = Field(alias="MNT_TEST_MODE")
     signature: str = Field(alias="MNT_SIGNATURE")
     moneta_user: Optional[str] = Field(alias="MNT_USER")
