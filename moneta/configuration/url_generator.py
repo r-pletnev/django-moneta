@@ -93,6 +93,7 @@ class UrlGenerator(BaseModel):
             if description
             else self.config.get_payment_description(),
             signature=self.signature(order_id, amount, subscriber_id),
+            subscriber_id=subscriber_id,
         )
         payload = query.dict(by_alias=True, exclude_none=True)
         return add_url_query_params(url=self.root_url, additional_params=payload)

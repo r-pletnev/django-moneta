@@ -31,6 +31,7 @@ class CheckNotificationView(View):
         values["test_mode"] = params.get_test_mode()
         values["payment_system"] = params.get_payment_system()
         values["payment_system_unit_id"] = params.unit_id if params.unit_id else ""
+        values["subscriber_id"] = params.subscriber_id if params.subscriber_id else ""
         del values["moneta_user"]
         del values["unit_id"]
         return Invoice.objects.create_check_invoice(

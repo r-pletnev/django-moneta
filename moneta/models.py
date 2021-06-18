@@ -61,8 +61,8 @@ class Invoice(models.Model):
     corraccount = models.CharField(
         max_length=20, help_text="MNT_CORRACCOUNT", blank=True, null=True
     )
-    subscriber_id = models.PositiveIntegerField(
-        help_text="MNT_SUBSCRIBER_ID", blank=True, null=True
+    subscriber_id = models.CharField(
+        help_text="MNT_SUBSCRIBER_ID", blank=True, max_length=200
     )
     status = models.CharField(max_length=6, choices=status_choices, default=CHECK)
 

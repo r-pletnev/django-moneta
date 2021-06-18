@@ -32,7 +32,7 @@ class Migration(migrations.Migration):
                 ('signature', models.CharField(blank=True, help_text='MNT_SIGNATURE', max_length=250)),
                 ('payment_system_unit_id', models.CharField(help_text='paymentSystem.unitId', max_length=10, blank=True)),
                 ('corraccount', models.CharField(blank=True, null=True, help_text='MNT_CORRACCOUNT', max_length=20)),
-                ('subscriber_id', models.PositiveIntegerField(blank=True, help_text='MNT_SUBSCRIBER_ID', null=True)),
+                ('subscriber_id', models.CharField(blank=True, help_text='MNT_SUBSCRIBER_ID', max_length=200)),
                 ('status', models.CharField(choices=[('CHECK', 'CHECK'), ('PAID', 'PAID')], max_length=6)),
                 ('payment_system', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='moneta.paymentsystem')),
             ],
