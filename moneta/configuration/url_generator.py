@@ -15,7 +15,7 @@ class QueryPayload(BaseModel):
     test_mode: str  # MNT_TEST_MODE
     unit_id: str  # paymentSystem.unitId
     limit_ids: str  # paymentSystem.limitIds
-    subscriber_id: str # MNT_SUBSCRIBER_ID
+    subscriber_id: Optional[str] = None  # MNT_SUBSCRIBER_ID
     success_url: Optional[str] = None
     description: Optional[str] = None
     signature: Optional[str] = None
@@ -33,7 +33,7 @@ class QueryPayload(BaseModel):
             "success_url": "MNT_SUCCESS_URL",
             "description": "MNT_DESCRIPTION",
             "signature": "MNT_SIGNATURE",
-            'subscriber_id': 'MNT_SUBSCRIBER_ID',
+            "subscriber_id": "MNT_SUBSCRIBER_ID",
         }
 
 
@@ -44,7 +44,9 @@ class UrlGenerator(BaseModel):
     def root_url(self) -> str:
         return f"{self.config.payment_url}{self.config.urls_config.assistant_link}"
 
-    def _signature_chunks(self, order_id: str, amount: float, subscriber_id: str) -> str:
+    def _signature_chunks(
+        self, order_id: str, amount: float, subscriber_id: str
+    ) -> str:
         signature_chunks = [
             str(self.config.basic_config.account_id),
             order_id,
@@ -56,10 +58,12 @@ class UrlGenerator(BaseModel):
         ]
         return "".join(signature_chunks)
 
-    def signature(self, order_id: Union[str,int], amount: float, subscriber_id: str) -> Optional[str]:
+    def signature(
+        self, order_id: Union[str, int], amount: float, subscriber_id: str
+    ) -> Optional[str]:
         if self.config.basic_config.account_code is None:
             return None
-        sign = self._signature_chunks(str(order_id), amount, subscriber_id )
+        sign = self._signature_chunks(str(order_id), amount, subscriber_id)
         return md5(sign.encode("utf-8")).hexdigest()
 
     @staticmethod
