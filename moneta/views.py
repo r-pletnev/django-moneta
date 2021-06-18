@@ -30,24 +30,26 @@ class CheckNotificationView(View):
         values = params.dict()
         values["test_mode"] = params.get_test_mode()
         values["payment_system"] = params.get_payment_system()
-        values["payment_system_unit_id"] = params.unit_id
+        values["payment_system_unit_id"] = params.unit_id if params.unit_id else ""
         del values["moneta_user"]
         del values["unit_id"]
         return Invoice.objects.create_check_invoice(
             transaction_id=params.transaction_id, values=values
         )
 
-    def post(self, request, *args, **kwargs):
-        body = json.loads(request.body.decode("utf-8"))
-        params = MonetaQueryParameters(**body)
+    def handle_input_data(self, input_data: dict) -> MonetaQueryParameters:
+        params = MonetaQueryParameters(**input_data)
         invoice = self.create_invoice(params)
         signals.invoice_checking.send(sender=self, invoice=invoice)
+        return params
+
+    def post(self, request, *args, **kwargs):
+        body = json.loads(request.body.decode("utf-8"))
+        params = self.handle_input_data(input_data=body)
         return HttpResponse(params.xml_body(), content_type="text/xml")
 
     def get(self, request):
-        params = MonetaQueryParameters(**request.GET.dict())
-        invoice = self.create_invoice(params)
-        signals.invoice_checking.send(sender=self, invoice=invoice)
+        params = self.handle_input_data(input_data=request.GET.dict())
         return HttpResponse(params.xml_body(), content_type="text/xml")
 
 

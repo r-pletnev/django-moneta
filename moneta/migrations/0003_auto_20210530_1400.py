@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
                 ('currency', models.CharField(help_text='MNT_CURRENCY_CODE', max_length=3)),
                 ('test_mode', models.BooleanField(help_text='MNT_TEST_MODE')),
                 ('signature', models.CharField(blank=True, help_text='MNT_SIGNATURE', max_length=250)),
-                ('payment_system_unit_id', models.CharField(help_text='paymentSystem.unitId', max_length=10)),
+                ('payment_system_unit_id', models.CharField(help_text='paymentSystem.unitId', max_length=10, blank=True)),
                 ('corraccount', models.CharField(blank=True, null=True, help_text='MNT_CORRACCOUNT', max_length=20)),
                 ('subscriber_id', models.PositiveIntegerField(blank=True, help_text='MNT_SUBSCRIBER_ID', null=True)),
                 ('status', models.CharField(choices=[('CHECK', 'CHECK'), ('PAID', 'PAID')], max_length=6)),

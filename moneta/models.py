@@ -56,7 +56,7 @@ class Invoice(models.Model):
     test_mode = models.BooleanField(help_text="MNT_TEST_MODE")
     signature = models.CharField(max_length=250, help_text="MNT_SIGNATURE", blank=True)
     payment_system_unit_id = models.CharField(
-        max_length=10, help_text="paymentSystem.unitId"
+        max_length=10, help_text="paymentSystem.unitId", blank=True
     )
     corraccount = models.CharField(
         max_length=20, help_text="MNT_CORRACCOUNT", blank=True, null=True

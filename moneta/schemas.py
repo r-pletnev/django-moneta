@@ -17,14 +17,14 @@ class MonetaQueryParameters(BaseModel):
     # command: str = Field(alias="MNT_COMMAND")
     merchant_id: int = Field(alias="MNT_ID")
     transaction_id: str = Field(alias="MNT_TRANSACTION_ID")
-    operation_id: Optional[str] = Field(alais="MNT_OPERATION_ID")
-    amount: Optional[Decimal] = Field(alias="MNT_AMOUNT")
     currency: str = Field(alias="MNT_CURRENCY_CODE")
-    subscriber_id: str = Field(alias="MNT_SUBSCRIBER_ID")
     test_mode: str = Field(alias="MNT_TEST_MODE")
     signature: str = Field(alias="MNT_SIGNATURE")
+    subscriber_id: Optional[str] = Field(alias="MNT_SUBSCRIBER_ID", default=None)
+    amount: Optional[Decimal] = Field(alias="MNT_AMOUNT")
+    operation_id: Optional[str] = Field(alais="MNT_OPERATION_ID")
     moneta_user: Optional[str] = Field(alias="MNT_USER")
-    unit_id: str = Field(alias="paymentSystem.unitId")
+    unit_id: Optional[str] = Field(alias="paymentSystem.unitId", default=None)
     corraccount: Optional[str] = Field(alias="MNT_CORRACCOUNT")
 
     def get_payment_system(self) -> Optional[PaymentSystem]:
@@ -47,17 +47,19 @@ class MonetaQueryParameters(BaseModel):
         """
         return 402
 
-    def get_signature(self) -> str:
+    def get_signature(self, account_code: Optional[str] = None) -> str:
+        if account_code is None:
+            account_code = moneta_config.get_account_code()
         chunks = [
             str(self.result_code()),
             str(self.merchant_id),
             str(self.transaction_id),
-            moneta_config.get_account_code(),
+            account_code,
         ]
         sign = "".join(chunks)
         return md5(sign.encode("utf-8")).hexdigest()
 
-    def xml_body(self) -> str:
+    def xml_body(self, account_code: Optional[str] = None) -> str:
         return f"""<?xml version="1.0" encoding="UTF-8"?>
         <MNT_RESPONSE>
             <MNT_ID>{self.merchant_id}</MNT_ID>
@@ -65,6 +67,6 @@ class MonetaQueryParameters(BaseModel):
             <MNT_RESULT_CODE>{self.result_code()}</MNT_RESULT_CODE>
             <MNT_DESCRIPTION></MNT_DESCRIPTION>
             <MNT_AMOUNT>{self.amount}</MNT_AMOUNT>
-            <MNT_SIGNATURE>{self.get_signature()}</MNT_SIGNATURE>
+            <MNT_SIGNATURE>{self.get_signature(account_code)}</MNT_SIGNATURE>
         </MNT_RESPONSE>
                 """
