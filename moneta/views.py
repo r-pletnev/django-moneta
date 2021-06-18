@@ -18,6 +18,10 @@ def hook_view(request):
     return HttpResponse("SUCCESS")
 
 
+def payment_success(request):
+    return HttpResponse("SUCCESS")
+
+
 class CheckNotificationView(View):
     """Handler checking notification from payment server"""
 

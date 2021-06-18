@@ -3,6 +3,7 @@ from django.urls import path
 from .views import (
     PaymentInitFormView,
     hook_view,
+    payment_success,
     PaymentInitApiView,
     PaidNotificationView,
     CheckNotificationView,
@@ -26,6 +27,10 @@ urlpatterns = [
             template_name="moneta/init.html",
         ),
         name="init",
+    ),
+    path(
+        "success",
+        payment_success, name='payment-success',
     ),
     path(
         "api_init_pay/<int:order_id>/<int:amount>",
