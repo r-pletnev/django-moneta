@@ -25,11 +25,13 @@ def test_root_url():
 
 def test_signature():
     config = moneta_config.config()
+    old_code = config.basic_config.account_code
     config.basic_config.account_code = 1
     gen = UrlGenerator(config=config)
-    assert gen.signature(order_id=123, amount=10) == "58772071f3af102aef274797b8662029"
+    assert gen.signature(order_id=123, amount=10, subscriber_id="") == "58772071f3af102aef274797b8662029"
     config.basic_config.account_code = None
-    assert gen.signature(order_id=12, amount=10) is None
+    assert gen.signature(order_id=12, amount=10, subscriber_id="") is None
+    config.basic_config.account_code = old_code
 
 
 def test_query_payload():
@@ -67,7 +69,7 @@ def test_payment_url():
     url = gen.payment_url(
         payment_system=payment_system, order_id=order_id, amount=amount
     )
-    check_url = "https://demo.moneta.ru/assistant.htm?MNT_ID=123&MNT_TRANSACTION_ID=1&MNT_AMOUNT=23.12&MNT_CURRENCY_CODE=RUB&MNT_TEST_MODE=1&paymentSystem.unitId=card&paymentSystem.limitIds=card"
+    check_url = "https://demo.moneta.ru/assistant.htm?MNT_ID=123&MNT_TRANSACTION_ID=1&MNT_AMOUNT=23.12&MNT_CURRENCY_CODE=RUB&MNT_TEST_MODE=1&paymentSystem.unitId=card&paymentSystem.limitIds=card&MNT_SUBSCRIBER_ID=&MNT_SIGNATURE=3d76ae1753d62adee43e6d0f810c69d5"
     assert url == check_url
     url = gen.payment_url(order_id=order_id, amount=amount)
     assert url == check_url

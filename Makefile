@@ -13,3 +13,6 @@ install:
 	pip install build/django-moneta-0.1.tar.gz
 
 reinstall: uninstall install
+
+test:
+	pytest moneta -vv

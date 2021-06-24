@@ -2,8 +2,8 @@ from django.urls import path
 
 from .views import (
     PaymentInitFormView,
-    hook_view,
-    payment_success,
+    SuccessView,
+    FailView,
     PaymentInitApiView,
     PaidNotificationView,
     CheckNotificationView,
@@ -13,7 +13,6 @@ from .forms import PaymentForm
 app_name = "moneta"
 
 urlpatterns = [
-    path("hook", hook_view, name="hook-view"),
     path(
         "check_notification",
         CheckNotificationView.as_view(),
@@ -30,7 +29,13 @@ urlpatterns = [
     ),
     path(
         "success",
-        payment_success, name='payment-success',
+        SuccessView.as_view(template_name='moneta/success.html'),
+        name="payment-success",
+    ),
+    path(
+        "fail",
+        FailView.as_view(template_name='moneta/fail.html'),
+        name="payment-fail",
     ),
     path(
         "api_init_pay/<int:order_id>/<int:amount>",

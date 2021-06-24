@@ -148,7 +148,7 @@ LOGGING = {
     },
     "loggers": {
         "moneta-log": {
-            "handlers": ["console", "file"],
+            "handlers": ["console"],
             "level": "DEBUG",
             "propagate": False,
         },
