@@ -3,6 +3,8 @@ run_build:
 
 clean_after_build:
 	rm -rf django_moneta.egg-info
+	rm  -rf build/lib
+	rm -rf build/bdist.linux-x86_64
 
 app: run_build clean_after_build
 
