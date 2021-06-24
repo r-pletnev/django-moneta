@@ -6,7 +6,7 @@ django-moneta
 ***Внимание:*** Для корректного функционирования приложения **Check URL** в настройках магазина в админке PayAnyWay должен быть указан!
 
 
-Спецификация: https://demo.moneta.ru/doc/MONETA.Assistant.ru.pdf
+Спецификация: [https://demo.moneta.ru/doc/MONETA.Assistant.ru.pdf](Спецификация)
 
 ## Установка ##
 ```sh
