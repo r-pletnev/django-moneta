@@ -2,7 +2,7 @@ import json
 import logging
 from typing import Optional
 
-from django.views.generic import FormView, View
+from django.views.generic import FormView, View, TemplateView
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 
 from moneta import signals
@@ -13,13 +13,16 @@ from moneta.schemas import MonetaQueryParameters
 log = logging.getLogger("moneta-log")
 
 
-def hook_view(request):
-    log.debug(request.GET)
-    return HttpResponse("SUCCESS")
+class SuccessView(TemplateView):
+
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
 
 
-def payment_success(request):
-    return HttpResponse("SUCCESS")
+class FailView(TemplateView):
+
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
 
 
 class CheckNotificationView(View):
