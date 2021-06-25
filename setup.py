@@ -16,7 +16,7 @@ extras_require["dev"] = extras_require["dev"] + extras_require["test"]
 
 
 setup(
-    name="django-moneta",
+    name="django-payanyway",
     url="https://github.com/r-pletnev/django-moneta",
     license="GPL",
     description="Moneta(PayAnyWay)",

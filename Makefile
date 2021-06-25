@@ -2,7 +2,7 @@ run_build:
 	python -m build --outdir build
 
 clean_after_build:
-	rm -rf django_moneta.egg-info
+	rm -rf django_payanyway.egg-info
 	rm  -rf build/lib
 	rm -rf build/bdist.linux-x86_64
 

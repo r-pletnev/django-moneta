@@ -1,4 +1,4 @@
-django-moneta
+django-payanyway
 =============
 
 Приложение для интеграции платежной системы PayAnyWay(Moneta) в проекты работающие на Django
@@ -11,7 +11,7 @@ django-moneta
 ## Установка ##
 
 ```sh
-pip install django-moneta
+pip install django-payanyway
 ```
 
 Запустить миграцию в корне проекта:
