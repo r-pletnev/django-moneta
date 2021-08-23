@@ -10,3 +10,5 @@ django_moneta.egg-info
 *.sqlite3
 
 moneta/tests/moneta-log.txt
+
+.env

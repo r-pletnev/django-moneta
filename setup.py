@@ -6,6 +6,7 @@ extras_require = {
     "test": [
         "pytest-django",
         "pytest",
+        "pytest-dotenv",
     ],
     "dev": [
         "ipython",
@@ -21,10 +22,10 @@ setup(
     license="GPL",
     description="Moneta(PayAnyWay)",
     long_description=open("README.md", "r", encoding="utf-8").read(),
-    long_description_content_type='text/markdown',
+    long_description_content_type="text/markdown",
     author="Roman Pletnev",
     author_email="ge52@mail.ru",
-    install_requires=["django>=2", "pydantic"],
+    install_requires=["django>=2", "pydantic", "suds-py3"],
     python_require=">=3.7",
     extras_require=extras_require,
     packages=["moneta"],
