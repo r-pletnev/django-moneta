@@ -20,3 +20,12 @@ def test_get_operation_list():
     client.debug_mode()
     response = client.get_operation_list(day_ago, now)
     assert response is not None
+
+
+def test_get_sum_per_period():
+    now = datetime.datetime.now()
+    day_ago = now - datetime.timedelta(days=1)
+    client = get_soap_client()
+    response = client.get_sum_per_period(day_ago, now)
+    assert response > 0
+

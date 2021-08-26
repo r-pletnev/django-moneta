@@ -25,7 +25,7 @@ setup(
     long_description_content_type="text/markdown",
     author="Roman Pletnev",
     author_email="ge52@mail.ru",
-    install_requires=["django>=2", "pydantic", "suds-py3"],
+    install_requires=["django>=2", "pydantic", "zeep"],
     python_require=">=3.7",
     extras_require=extras_require,
     packages=["moneta"],
