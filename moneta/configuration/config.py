@@ -1,3 +1,4 @@
+import urllib.parse
 from django.conf import settings as django_settings
 from django.utils.functional import SimpleLazyObject
 from pydantic import BaseModel, HttpUrl, validator
@@ -62,6 +63,11 @@ class MainConfig(BaseModel):
         if self.basic_config.demo_mode:
             return self.urls_config.demo_url
         return self.urls_config.production_url
+
+    @property
+    def soap_url(self) -> str:
+        return urllib.parse.urljoin(self.payment_url, self.urls_config.soap_link)
+
 
     def get_payment_description(self) -> Optional[str]:
         return self.basic_config.payment_description
