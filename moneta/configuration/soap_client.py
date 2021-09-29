@@ -37,7 +37,12 @@ class SoapClient:
             .flatten()
             .reject(lambda elm: py_.get(elm, ["key"]) != "sourceamount")
             .map_("value")
-            .map(lambda elm: int(elm))
+            .map(int)
             .sum()
             .value()
         )
+
+    def get_operation_sum(self, operation_id: int) ->int:
+        # result = self.client.service.
+        pass
+
