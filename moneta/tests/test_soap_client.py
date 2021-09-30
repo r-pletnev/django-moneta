@@ -1,6 +1,8 @@
 import datetime
 import os
+from collections import OrderedDict
 
+import pydash
 import pytest
 
 from moneta.configuration.soap_client import SoapClient
@@ -18,8 +20,12 @@ def test_get_operation_list():
     d2 = datetime.datetime(2021,9, 22,23,59,59)
     client = get_soap_client()
     client.debug_mode()
-    response = client.get_operation_list(d1, d2)
-    assert response is not None
+    result = client.get_operations(d1, d2)
+    assert result is not None
+    assert isinstance(pydash.get(result, '0'), dict)
+    assert isinstance(pydash.get(result, '0'), OrderedDict) is False
+    assert isinstance(pydash.get(result, '0.id'), int)
+    assert isinstance(pydash.get(result, '0.sourceamount'), int)
 
 
 def test_get_sum_per_period():
